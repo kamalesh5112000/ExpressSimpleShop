@@ -1,4 +1,5 @@
 const path = require('path');
+const cors = require('cors');
 
 const express = require('express');
 const bodyParser = require('body-parser');
@@ -13,17 +14,21 @@ app.set('views', 'views');
 
 const adminRoutes = require('./routes/admin');
 const shopRoutes = require('./routes/shop');
+const userRoutes = require('./routes/user');
 
 
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
-
+app.use(cors());
 app.use('/admin', adminRoutes);
 app.use(shopRoutes);
+app.use(userRoutes);
 
 app.use(errorController.get404);
 
+
 sequelize.sync().then(resut=>{
+    
 
     app.listen(3000);
 })
